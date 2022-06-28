@@ -350,5 +350,9 @@ public class MapperTests {
         }
     }
 
+    @Test
+    public void gitTest(){
+        System.out.println("gitTest1");
+    }
 
 }
