@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.CommomMapper">
+
+    <sql id="insertFields1">
+        imguuid,imgname,imgpath,note, tablename, createTime
+    </sql>
+
+    <select id="selectImg" resultType="Image">
+        select *
+        from tb_img
+        where imguuid = #{imguuid}
+    </select>
+
+    <update id="updateImg" parameterType="Image">
+        update tb_img set imgpath = #{imgpath}
+        where imguuid = #{imguuid}
+    </update>
+
+    <insert id="insertImg" parameterType="Image">
+        insert into tb_img (<include refid="insertFields1"></include>)
+        values(#{imguuid},#{imgname}, #{imgpath}, #{note}, #{tablename}, #{createTime})
+    </insert>
+
+
+</mapper>

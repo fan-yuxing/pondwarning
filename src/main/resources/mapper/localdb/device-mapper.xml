@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.DeviceMapper">
+
+    <sql id="selectFields1">
+        wdevid, useruuid,imguuid, wdevname, lastCommTime, doxSts, thwSts,ecSts, phSts, adSts,zdSts, ywSts,ylsSts,onlineSts,description
+    </sql>
+
+    <sql id="selectFields2">
+        wdevid, wdevname
+    </sql>
+
+    <sql id="insertFields">
+       wdevid, useruuid,imguuid, wdevname, doxSts, thwSts,ecSts, phSts, adSts,zdSts, ywSts,ylsSts,description,ponduuid,centertype,localx,localy,localz,createTime
+    </sql>
+
+    <select id="selectDevice" resultType="Device">
+        select <include refid="selectFields1"></include>
+        from iot_device
+    </select>
+
+    <update id="updateDevice">
+        update iot_device set lastCommTime = #{lastCommTime} where wdevid = #{wdevid}
+    </update>
+
+    <select id="selectDevices" resultType="DevList">
+        SELECT d.wdevid as devid,d.wdevname as devname,p.pondname as pondname, 0 as type
+        from iot_device as d inner join tb_pond as p on
+        d.ponduuid=p.ponduuid where d.useruuid=#{useruuid}
+        order by d.createTime asc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectTotalDevice" resultType="Integer">
+        select count(d.wdevid)
+        from iot_device as d  where d.useruuid=#{useruuid}
+        order by d.createTime asc
+    </select>
+
+    <insert id="insertDevice" parameterType="Device">
+        insert into iot_device (<include refid="insertFields"></include>)
+        values(#{wdevid},#{useruuid}, #{imguuid}, #{wdevname}, #{doxSts}, #{thwSts},#{ecSts},#{phSts}
+        ,#{adSts},#{zdSts},#{ywSts},#{ylsSts},#{description},#{ponduuid},#{centertype},#{localx},#{localy},#{localz},#{createTime})
+    </insert>
+
+    <select id="selectDevicesFew" resultType="Device">
+        select <include refid="selectFields2"></include>
+        from iot_device
+        where useruuid = #{useruuid}
+        order by createTime asc
+    </select>
+
+    <select id="selectDevicesFewByPond" resultType="Device">
+        select <include refid="selectFields2"></include>
+        from iot_device
+        where useruuid = #{useruuid} and ponduuid = #{ponduuid}
+        order by createTime asc
+    </select>
+
+    <select id="selectCenterDevice" resultType="Device">
+        select *
+        from iot_device
+        where ponduuid = #{ponduuid} and centertype=1
+    </select>
+
+    <select id="selectNeedDevice" resultType="Device">
+        select *
+        from iot_device
+        where useruuid = #{useruuid} and ponduuid = #{ponduuid} and wdevid=#{wdevid}
+    </select>
+
+    <select id="selectOneDevice" resultType="Device">
+        select *
+        from iot_device
+        where wdevid=#{wdevid}
+    </select>
+
+    <delete id="deleteOneDevice">
+        delete from iot_device where wdevid=#{wdevid}
+    </delete>
+
+    <update id="updateOneDevice" parameterType="Device">
+        update iot_device set wdevname=#{wdevname}, doxSts=#{doxSts}, thwSts=#{thwSts},ecSts=#{ecSts},phSts=#{phSts}
+        ,adSts=#{adSts},zdSts=#{zdSts},ywSts=#{ywSts},ylsSts=#{ylsSts},description=#{description},ponduuid=#{ponduuid},centertype=#{centertype},
+        localx=#{localx},localy=#{localy},localz=#{localz},lastCommTime = #{lastCommTime} where wdevid = #{wdevid}
+     </update>
+
+</mapper>

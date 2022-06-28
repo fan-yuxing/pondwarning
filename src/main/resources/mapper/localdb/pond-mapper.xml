@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.PondMapper">
+
+    <sql id="selectFields1">
+        ponduuid, pondname, pondacreage, pondaddress
+    </sql>
+
+    <sql id="selectFields2">
+        ponduuid, pondname
+    </sql>
+
+    <sql id="insertFields1">
+        ponduuid,useruuid,imguuid,pondname, pondacreage, pondaddress,longitude,latitude,description,pondlength,pondwidth,ponddepth,createTime
+    </sql>
+
+    <select id="selectPonds" resultType="Pond">
+        select <include refid="selectFields1"></include>
+        from tb_pond
+        where useruuid = #{useruuid}
+        order by createTime asc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectPondsFew" resultType="Pond">
+        select <include refid="selectFields2"></include>
+        from tb_pond
+        where useruuid = #{useruuid}
+        order by createTime asc
+    </select>
+
+    <select id="selectTotalPond" resultType="Integer">
+        select count(ponduuid)
+        from tb_pond
+        where useruuid = #{useruuid}
+    </select>
+
+    <select id="selectTotalAcreage" resultType="BigDecimal">
+        select sum(pondacreage)
+        from tb_pond
+        where useruuid = #{useruuid}
+    </select>
+
+    <select id="selectOnePond" resultType="Pond">
+        select *
+        from tb_pond
+        where ponduuid = #{ponduuid}
+    </select>
+
+    <update id="updateOnePond" parameterType="Pond">
+        update tb_pond set
+        pondname=#{pondname}, pondacreage=#{pondacreage}, pondaddress=#{pondaddress},
+        longitude=#{longitude},latitude=#{latitude},description=#{description},pondlength=#{pondlength},
+        pondwidth=#{pondwidth},ponddepth=#{ponddepth}
+        where ponduuid = #{ponduuid}
+    </update>
+
+    <insert id="insertOnePond" parameterType="Pond">
+        insert into tb_pond (<include refid="insertFields1"></include>)
+        values(#{ponduuid},#{useruuid}, #{imguuid}, #{pondname}, #{pondacreage}, #{pondaddress},
+        #{longitude},#{latitude},#{description},#{pondlength},#{pondwidth},#{ponddepth},#{createTime})
+    </insert>
+
+    <delete id="deleteOnePond">
+        delete from tb_pond where ponduuid=#{ponduuid}
+    </delete>
+
+</mapper>

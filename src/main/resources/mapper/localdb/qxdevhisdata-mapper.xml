@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.QxdevHisDataMapper">
+
+    <sql id="selectFields1">
+        hisid, qdevid,collectTime,dqsd, dqwd, dqyl, fs, fx,tyfs, yl
+    </sql>
+
+    <sql id="insertFields">
+        hisid, qdevid,collectTime,dqsd, dqwd, dqyl, fs, fx,tyfs, yl
+    </sql>
+
+    <insert id="insertQxdevHisData" parameterType="QxdevHisData">
+        insert into iot_qxdevhisdata (<include refid="insertFields"></include>)
+        values(#{hisid},#{qdevid}, #{collectTime}, #{dqsd}, #{dqwd}, #{dqyl}, #{fs}, #{fx}, #{tyfs}, #{yl})
+    </insert>
+
+
+    <select id="selectQxdevHisDatas" resultType="QxdevHisData">
+        select <include refid="selectFields1"></include>
+        from iot_qxdevhisdata
+        where qdevid = #{qdevid}
+        order by collectTime DESC
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectTotalData" resultType="Integer">
+        select count(qdevid)
+        from iot_qxdevhisdata
+        where qdevid = #{qdevid}
+    </select>
+
+    <select id="selectQxdevHisDatasLimitByDynamic" parameterType="String" resultType="QxdevHisData">
+        ${sqlStr}
+    </select>
+</mapper>

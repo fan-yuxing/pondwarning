@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.UserMapper">
+
+    <sql id="insertFields">
+       useruuid, username, password, salt, usertype, createTime
+    </sql>
+
+    <sql id="selectFields1">
+        useruuid, imguuid,username, password, salt, realname, address,phone, email, note,usertype, createTime
+    </sql>
+
+    <sql id="selectFields2">
+        useruuid, imguuid,username, realname, address,phone, email, usertype
+    </sql>
+
+    <select id="selectById" resultType="User">
+        select <include refid="selectFields2"></include>
+        from tb_sysuser
+        where useruuid = #{useruuid}
+    </select>
+
+    <select id="selectByName" resultType="User">
+        select <include refid="selectFields1"></include>
+        from tb_sysuser
+        where username = #{username}
+    </select>
+
+
+    <insert id="insertUser" parameterType="User">
+        insert into tb_sysuser (<include refid="insertFields"></include>)
+        values(#{useruuid},#{username}, #{password}, #{salt}, #{usertype}, #{createTime})
+    </insert>
+
+
+    <select id="selectDevCount" resultType="Integer">
+        select (select count(wdevid) from iot_device where useruuid= #{useruuid}) +
+        (select count(vdevid) from iot_videodevice where useruuid= #{useruuid})
+        as a;
+    </select>
+
+    <update id="updateUserInfo" parameterType="User">
+        update tb_sysuser set realname = #{realname},address=#{address},phone=#{phone},email=#{email}
+        where useruuid = #{useruuid}
+    </update>
+
+
+
+
+
+
+
+
+
+
+
+
+    <update id="updateHeader">
+        update user set header_url = #{headerUrl} where id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        update user set password = #{password} where id = #{id}
+    </update>
+
+</mapper>

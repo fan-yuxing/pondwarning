@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.ModelMapper">
+
+    <select id="selectModelPath" parameterType="Model" resultType="String">
+        select mpath
+        from tb_models
+        where modeltype=#{modeltype} and useruuid=#{useruuid};
+    </select>
+
+    <update id="updateModelTrainState" parameterType="Model">
+        update tb_models
+        set train=#{train}
+        where modeltype=#{modeltype} and useruuid=#{useruuid};
+    </update>
+
+    <select id="selectExistModel" parameterType="Model" resultType="Integer">
+        select count(modelid)
+        from tb_models
+        where modeltype=#{modeltype} and useruuid=#{useruuid};
+    </select>
+
+    <insert id="insertModel">
+        insert into tb_models (useruuid,mpath,modeltype,modelpara,description,createTime)
+        values (#{useruuid},#{mpath},#{modeltype},#{modelpara},#{description},#{createTime})
+    </insert>
+
+    <select id="selectUserModel" resultType="Model">
+        select * from tb_models
+        where modeltype=#{modeltype} and useruuid=#{useruuid};
+    </select>
+
+    <update id="updateModel" parameterType="Model">
+        update tb_models
+        set mpath=#{mpath},modelpara=#{modelpara},description=#{description},createTime=#{createTime}
+        where modeltype=#{modeltype} and useruuid=#{useruuid};
+    </update>
+
+</mapper>

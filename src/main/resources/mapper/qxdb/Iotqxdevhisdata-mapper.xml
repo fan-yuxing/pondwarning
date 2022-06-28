@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.qxdb.IotQxdevHisDataMapper">
+
+    <sql id="selectFields1">
+        id, collectTime,devId,dqsd, dqwd, dqyl, fs, fx,tyfs, yl
+    </sql>
+
+    <select id="selectById" resultType="IotQxdevHisData">
+        select <include refid="selectFields1"></include>
+        from iot_qxdevice_hisdata
+        where id = #{id}
+    </select>
+
+    <select id="selectQxdevHisDataCount" resultType="Integer">
+        select count(id)
+        from iot_qxdevice_hisdata
+        where devId = #{devId}
+    </select>
+
+    <select id="selectQxdevHisDataByIdAndTime" resultType="IotQxdevHisData">
+        select <include refid="selectFields1"></include>
+        from iot_qxdevice_hisdata
+        where devId=#{devId} and collectTime>#{lastCommTime} ORDER BY collectTime DESC;
+    </select>
+
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.QxdeviceMapper">
+
+    <sql id="selectFields1">
+        qdevid, imguuid, qdevname, lastCommTime, dqsd, dqwd,dqyl, fs, fx,tyfs,yl,description
+    </sql>
+
+
+    <sql id="selectFields2">
+        qdevid, qdevname
+    </sql>
+
+    <select id="selectQxdevice" resultType="Qxdevice">
+        select <include refid="selectFields1"></include>
+        from iot_qxdevice
+    </select>
+
+    <update id="updateQxdevice">
+        update iot_qxdevice set lastCommTime = #{lastCommTime} where qdevid = #{qdevid}
+    </update>
+
+    <select id="selectQxdevices" resultType="DevList">
+        SELECT q.qdevid as devid,q.qdevname as devname , 1 as type from iot_qxdevice as q
+        where q.useruuid=#{useruuid}
+        order by q.createTime asc;
+    </select>
+
+    <select id="selectTotalQxdevice" resultType="Integer">
+        select count(q.qdevid) from iot_qxdevice as q
+        where q.useruuid=#{useruuid}
+    </select>
+
+    <select id="selectQxdevicesFew" resultType="Qxdevice">
+        select <include refid="selectFields2"></include>
+        from iot_qxdevice
+        where useruuid = #{useruuid}
+        order by createTime asc
+    </select>
+
+    <select id="selectQxdevicesByPond" resultType="Qxdevice">
+        select <include refid="selectFields1"></include>
+        from iot_qxdevice
+        where qdevid =(select devid from tb_ponddev where ponduuid=#{ponduuid});
+    </select>
+
+    <insert id="insertQxdevice" parameterType="Qxdevice">
+        insert into iot_qxdevice (qdevid,useruuid,qdevname,description,createTime)
+        values (#{qdevid},#{useruuid}, #{qdevname}, #{description}, #{createTime})
+    </insert>
+
+    <insert id="insertPondQxdevice">
+        insert into tb_ponddev (ponduuid,devid,type) values
+        <foreach collection="list" separator="," item="item">
+            (#{item.ponduuid},#{item.devid},#{item.type})
+        </foreach>
+    </insert>
+
+    <select id="selectOneQxdevice" resultType="Qxdevice">
+        select *
+        from iot_qxdevice
+        where qdevid=#{qdevid}
+    </select>
+
+    <delete id="deleteOneQxdevice">
+        delete from iot_qxdevice where qdevid=#{qdevid}
+    </delete>
+
+    <delete id="deleteQxdeviceAndPond">
+        delete from tb_ponddev where devid=#{qdevid}
+    </delete>
+</mapper>

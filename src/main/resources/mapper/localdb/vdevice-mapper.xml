@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cau.cn.pondwarning.dao.localdb.VdeviceMapper">
+
+    <sql id="selectFields2">
+        vdevid, vdevname,settime
+    </sql>
+
+    <select id="selectVdevices" resultType="DevList">
+        SELECT v.vdevid as devid,v.vdevname as devname,p.pondname as pondname, 2 as type
+        from iot_videodevice as v inner join tb_pond as p on
+        v.ponduuid=p.ponduuid where v.useruuid=#{useruuid}
+        order by v.createTime asc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectTotalVdevice" resultType="Integer">
+        select count(v.vdevid)
+        from iot_videodevice as v inner join tb_ponddev as pd on
+        v.vdevid=pd.devid inner join tb_pond as p on
+        pd.ponduuid=p.ponduuid where v.useruuid=#{useruuid} and pd.type=2
+        order by v.createTime asc
+    </select>
+
+    <select id="selectVdevicesFew" resultType="Vdevice">
+        select <include refid="selectFields2"></include>
+        from iot_videodevice
+        where useruuid = #{useruuid}
+        order by createTime asc
+    </select>
+
+    <select id="selectVdevicesFewByPond" resultType="Vdevice">
+        select <include refid="selectFields2"></include>
+        from iot_videodevice
+        where ponduuid = #{ponduuid}
+        order by createTime asc
+    </select>
+
+    <select id="selectOneVdevice" resultType="Vdevice">
+        select *
+        from iot_videodevice
+        where vdevid = #{vdevid}
+    </select>
+
+    <update id="updateVdeviceSet" parameterType="Vdevice">
+        update iot_videodevice SET setarea=#{setarea},settime=#{settime} where vdevid=#{vdevid};
+    </update>
+
+    <insert id="insertPlantsHis" parameterType="PlantsHis">
+        insert into tb_plantshis VALUES(#{hisid},#{vdevid},#{imguuid},#{area},#{collectTime})
+    </insert>
+
+    <select id="selectPlantsHis" resultType="PlantsHis">
+        select * from tb_plantshis where vdevid=#{vdevid} order by collectTime asc
+    </select>
+
+    <select id="selectAllVdevices" resultType="Vdevice">
+        select * from iot_videodevice  order by createTime desc
+    </select>
+
+    <insert id="insertVdevice" parameterType="Vdevice">
+        insert into iot_videodevice (vdevid,vdevname,ponduuid,url,description,useruuid,createTime)
+        values(#{vdevid},#{vdevname}, #{ponduuid}, #{url}, #{description}, #{useruuid},#{createTime})
+    </insert>
+
+    <delete id="deleteOneVdevice">
+        delete from iot_videodevice where vdevid=#{vdevid}
+    </delete>
+
+</mapper>

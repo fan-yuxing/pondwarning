@@ -1,0 +1,142 @@
+package edu.cau.cn.pondwarning.entity.localdb;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+public class DevHisData {
+    private String hisid;
+    private String wdevid;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone ="GMT+8")
+    private Date collectTime;
+    private BigDecimal dox;
+    private BigDecimal thw;
+    private BigDecimal ec;
+    private BigDecimal ph;
+    private BigDecimal ad;
+    private BigDecimal zd;
+    private BigDecimal yw;
+    private BigDecimal yls;
+
+    public DevHisData(){}
+
+    public DevHisData(String hisid, String wdevid, Date collectTime, BigDecimal dox, BigDecimal thw, BigDecimal ec, BigDecimal ph, BigDecimal ad, BigDecimal zd, BigDecimal yw, BigDecimal yls) {
+        this.hisid = hisid;
+        this.wdevid = wdevid;
+        this.collectTime = collectTime;
+        this.dox = dox;
+        this.thw = thw;
+        this.ec = ec;
+        this.ph = ph;
+        this.ad = ad;
+        this.zd = zd;
+        this.yw = yw;
+        this.yls = yls;
+    }
+
+    public String getHisid() {
+        return hisid;
+    }
+
+    public void setHisid(String hisid) {
+        this.hisid = hisid;
+    }
+
+    public String getWdevid() {
+        return wdevid;
+    }
+
+    public void setWdevid(String wdevid) {
+        this.wdevid = wdevid;
+    }
+
+    public Date getCollectTime() {
+        return collectTime;
+    }
+
+    public void setCollectTime(Date collectTime) {
+        this.collectTime = collectTime;
+    }
+
+    public BigDecimal getDox() {
+        return dox;
+    }
+
+    public void setDox(BigDecimal dox) {
+        this.dox = dox;
+    }
+
+    public BigDecimal getThw() {
+        return thw;
+    }
+
+    public void setThw(BigDecimal thw) {
+        this.thw = thw;
+    }
+
+    public BigDecimal getEc() {
+        return ec;
+    }
+
+    public void setEc(BigDecimal ec) {
+        this.ec = ec;
+    }
+
+    public BigDecimal getPh() {
+        return ph;
+    }
+
+    public void setPh(BigDecimal ph) {
+        this.ph = ph;
+    }
+
+    public BigDecimal getAd() {
+        return ad;
+    }
+
+    public void setAd(BigDecimal ad) {
+        this.ad = ad;
+    }
+
+    public BigDecimal getZd() {
+        return zd;
+    }
+
+    public void setZd(BigDecimal zd) {
+        this.zd = zd;
+    }
+
+    public BigDecimal getYw() {
+        return yw;
+    }
+
+    public void setYw(BigDecimal yw) {
+        this.yw = yw;
+    }
+
+    public BigDecimal getYls() {
+        return yls;
+    }
+
+    public void setYls(BigDecimal yls) {
+        this.yls = yls;
+    }
+
+    @Override
+    public String toString() {
+        return "DevHisData{" +
+                "hisid='" + hisid + '\'' +
+                ", wdevid='" + wdevid + '\'' +
+                ", collectTime=" + collectTime +
+                ", dox=" + dox +
+                ", thw=" + thw +
+                ", ec=" + ec +
+                ", ph=" + ph +
+                ", ad=" + ad +
+                ", zd=" + zd +
+                ", yw=" + yw +
+                ", yls=" + yls +
+                '}';
+    }
+}
