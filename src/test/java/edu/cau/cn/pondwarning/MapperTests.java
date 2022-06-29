@@ -356,6 +356,7 @@ public class MapperTests {
         System.out.println("gitTest2");
         System.out.println("gitTest3");
         System.out.println("master test");
+        System.out.println("hot-fix test");
     }
 
 }
